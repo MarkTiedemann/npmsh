@@ -1,5 +1,10 @@
 #!/usr/bin/env node
 
+const flags = process.argv.slice(2)
+
+if (flags.includes('-v') || flags.includes('--version'))
+  return console.log('v' + require('./package.json').version)
+
 const readline = require('readline')
 const { spawn, execSync } = require('child_process')
 const { join } = require('path')
