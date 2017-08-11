@@ -1,6 +1,6 @@
 {
   "name": "npmsh",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Shell for running npm cmds and scripts.",
   "bin": {
     "npmsh": "bin.js"

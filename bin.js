@@ -61,7 +61,8 @@ function run (cmds) {
 rl.prompt()
 
 rl.on('line', line => {
-  switch (line.trim()) {
+  const cmds = line.trim()
+  switch (cmds) {
     case 'exit':
       return rl.close()
 
@@ -71,7 +72,7 @@ rl.on('line', line => {
       return rl.prompt()
 
     default: run(
-      line.split(' && ')
+      cmds.split(' && ')
       .map(cmd => cmd.trim())
     )
   }
