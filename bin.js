@@ -14,7 +14,9 @@ const buildInCmds = cmdList.concat(
   .map(o => Object.keys(o))
 )
 
-const pkg = require('./package.json')
+const pkg = require(join(
+  process.cwd(), 'package.json'
+))
 
 const scripts = Object.keys(pkg.scripts || {})
 
