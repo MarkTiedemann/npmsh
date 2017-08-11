@@ -11,7 +11,7 @@ const { cmdList, aliases, shorthands, affordances } = require(join(
 
 const buildInCmds = cmdList.concat(
   ...[aliases, affordances, shorthands]
-  .map(o => Object.keys(o))
+  .map(Object.keys)
 )
 
 const pkg = require(join(
