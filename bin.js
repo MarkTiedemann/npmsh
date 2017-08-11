@@ -72,8 +72,9 @@ rl.on('line', line => {
       return rl.prompt()
 
     default: run(
-      cmds.split(' && ')
+      cmds.split('&&')
       .map(cmd => cmd.trim())
+      .filter(cmd => !!cmd)
     )
   }
 })
