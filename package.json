@@ -1,6 +1,6 @@
 {
   "name": "npmsh",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Shell for running npm cmds and scripts.",
   "bin": {
     "npmsh": "bin.js"
@@ -16,7 +16,6 @@
   ],
   "author": "Mark Tiedemann <www.marktiedemann@gmail.com>",
   "license": "WTFPL",
-  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MarkTiedemann/npmsh.git"
@@ -24,5 +23,9 @@
   "bugs": {
     "url": "https://github.com/MarkTiedemann/npmsh/issues"
   },
-  "homepage": "https://github.com/MarkTiedemann/npmsh"
+  "homepage": "https://github.com/MarkTiedemann/npmsh",
+  "dependencies": {
+    "cross-clear": "^1.0.0",
+    "lodash.uniq": "^4.5.0"
+  }
 }

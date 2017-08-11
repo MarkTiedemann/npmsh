@@ -6,34 +6,28 @@ if (flags.includes('-v') || flags.includes('--version'))
   return console.log('v' + require('./package.json').version)
 
 const readline = require('readline')
-const { spawn, execSync } = require('child_process')
-const { join } = require('path')
+const { spawn } = require('child_process')
+const clear = require('cross-clear')
+const unique = require('lodash.uniq')
+const builtins = require('./lib/builtins')
+const loadScripts = require('./lib/load-scripts')
+const stripPrefix = require('./lib/strip-prefix')
 
-const { cmdList, aliases, shorthands, affordances } = require(join(
-  execSync('npm config get prefix').toString().trim(),
-  'node_modules/npm/lib/config/cmd-list'
-))
+let scripts = loadScripts()
 
-const buildInCmds = cmdList.concat(
-  ...[aliases, affordances, shorthands]
-  .map(Object.keys)
-)
+const reload = () => {
+  scripts = loadScripts()
+  rl.prompt()
+}
 
-const pkg = require(join(
-  process.cwd(), 'package.json'
-))
-
-const scripts = Object.keys(pkg.scripts || {})
-
-const unique = array => Array.from(new Set(array))
-
-const completions = unique(
+const getCompletions = () => unique(
   ['exit', 'clear']
-  .concat(buildInCmds, scripts)
-  .sort((a, b) => a.localeCompare(b))
+  .concat(builtins, scripts)
+  .sort()
 )
 
 const completer = line => {
+  const completions = getCompletions()
   const hits = completions.filter(c => c.startsWith(line))
   return [hits.length ? hits : completions, line]
 }
@@ -52,7 +46,7 @@ function run (cmds) {
     ? 'npm.cmd'
     : 'npm'
 
-  const npmArgs = !scripts.includes(bin) && buildInCmds.includes(bin)
+  const npmArgs = !scripts.includes(bin) && builtins.includes(bin)
     ? [bin, ...rest]
     : ['run', bin, '--', ...rest]
 
@@ -65,32 +59,22 @@ function run (cmds) {
   })
 }
 
+const prepareCmds = cmds =>
+  cmds.split('&&')
+  .map(cmd => cmd.trim())
+  .map(stripPrefix('npm run '))
+  .map(stripPrefix('npm '))
+  .filter(Boolean)
+
 rl.prompt()
 
 rl.on('line', line => {
   const cmds = line.trim()
   switch (cmds) {
-    case 'exit':
-      return rl.close()
-
-    case 'clear':
-      readline.cursorTo(process.stdout, 0, 0)
-      readline.clearScreenDown(process.stdout)
-      return rl.prompt()
-
-    case '':
-      return rl.prompt()
-
-    default: run(
-      cmds.split('&&')
-      .map(cmd => cmd.trim())
-      .map(cmd => cmd.startsWith('npm run ')
-        ? cmd.substr(8)
-        : cmd)
-      .map(cmd => cmd.startsWith('npm ')
-        ? cmd.substr(4)
-        : cmd)
-      .filter(cmd => !!cmd)
-    )
+    case 'exit': return rl.close()
+    case 'clear': return clear()
+    case 'reload': return reload()
+    case '': return rl.prompt()
+    default: run(prepareCmds(cmds))
   }
 })

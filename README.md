@@ -10,6 +10,13 @@ npm i -g npmsh
 
 ## Quickstart
 
+```sh
+# Start the shell
+$ npmsh
+# => Now you can run npm cmds and scripts
+# without the `npm ` or `npm run ` prefix
+```
+
 **Built-in cmds:**
 
 ```sh
@@ -43,6 +50,19 @@ npm i -g npmsh
 ```sh
 λ serve --open
 # => npm run serve -- --open
+```
+
+**Reserved cmds:**
+
+```sh
+λ clear
+# => clear the screen
+
+λ reload
+# => reload the package.json scripts
+
+λ exit
+# => exit the screen
 ```
 
 **Also has tab completion!**
