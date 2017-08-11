@@ -84,6 +84,9 @@ rl.on('line', line => {
     default: run(
       cmds.split('&&')
       .map(cmd => cmd.trim())
+      .map(cmd => cmd.startsWith('npm run ')
+        ? cmd.substr(8)
+        : cmd)
       .map(cmd => cmd.startsWith('npm ')
         ? cmd.substr(4)
         : cmd)
