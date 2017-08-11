@@ -71,6 +71,9 @@ rl.on('line', line => {
       readline.clearScreenDown(process.stdout)
       return rl.prompt()
 
+    case '':
+      return rl.prompt()
+
     default: run(
       cmds.split('&&')
       .map(cmd => cmd.trim())
