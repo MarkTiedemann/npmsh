@@ -7,7 +7,7 @@ if (flags.includes('-v') || flags.includes('--version'))
 
 const readline = require('readline')
 const { spawn } = require('child_process')
-const clear = require('cross-clear')
+const crossClear = require('cross-clear')
 const unique = require('lodash.uniq')
 const builtins = require('./lib/builtins')
 const loadScripts = require('./lib/load-scripts')
@@ -65,6 +65,11 @@ const prepareCmds = cmds =>
   .map(stripPrefix('npm run '))
   .map(stripPrefix('npm '))
   .filter(Boolean)
+
+const clear = () => {
+  crossClear()
+  rl.prompt()
+}
 
 rl.prompt()
 
