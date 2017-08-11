@@ -45,7 +45,7 @@ function run (cmds) {
     ? 'npm.cmd'
     : 'npm'
 
-  const npmArgs = buildInCmds.includes(bin)
+  const npmArgs = !scripts.includes(bin) && buildInCmds.includes(bin)
     ? [bin, ...rest]
     : ['run', bin, '--', ...rest]
 
